@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# 设置 iptables-persistent 自动安装选项
-echo iptables-persistent iptables-persistent/autosave_v4 boolean true | debconf-set-selections
-echo iptables-persistent iptables-persistent/autosave_v6 boolean true | debconf-set-selections
-
-# 安装 iptables-persistent 并自动确认
+# 安装 iptables-persistent，并自动确认
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
 apt-get install -y iptables-persistent
 
 # 添加防火墙规则
@@ -31,7 +29,8 @@ iptables -A FORWARD -p udp -m string --algo bm --string "BitTorrent protocol" -j
 iptables -A INPUT -p udp -m string --algo bm --string "BitTorrent" -j DROP
 iptables -A INPUT -p udp -m string --algo bm --string "BitTorrent protocol" -j DROP
 
-# 保存防火墙规则
-iptables-save
+# 保存防火墙规则并确保重启后加载
+iptables-save > /etc/iptables/rules.v4
+ip6tables-save > /etc/iptables/rules.v6
 
-echo "防火墙规则已设置完成。"
+echo "防火墙规则已设置完成，并将在系统重启后自动加载。"
