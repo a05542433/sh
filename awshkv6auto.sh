@@ -9,3 +9,6 @@ S=nyanpass bash <(curl -fLSs https://api.nyafw.com/download/nyanpass-install.sh)
 # 执行脚本3
 S=nyk bash <(curl -fLSs https://api.nyafw.com/download/nyanpass-install.sh) rel_nodeclient "-o -t 3c7b38ed-7139-47f5-82ae-9faef452e4fb -u https://traffic.kinako.one"
 
+# 执行脚本4
+S=nyzu bash <(curl -fLSs https://api.nyafw.com/download/nyanpass-install.sh) rel_nodeclient "-o -t 765b1aac-4391-4d30-9f98-d8a349a8eff5 -u https://zumo.moe"
+
