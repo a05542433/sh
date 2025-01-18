@@ -4,4 +4,4 @@
 echo 2 | bash <(curl -Ls https://raw.githubusercontent.com/a05542433/rule_list/main/tools/tools.sh)
 
 # 执行脚本2
-S=nyanpass bash <(curl -fLSs https://dl.nyafw.com/download/nyanpass-install.sh) rel_nodeclient "-o -t 16572ae9-049a-43bf-8334-9849f491f413 -u https://ny.nekocat.app"
+S=nyanpass bash <(curl -fLSs https://dl.nyafw.com/download/nyanpass-install.sh) rel_nodeclient "-o -t a5f39c2a-b6a6-4ec0-b775-e0af45a790f2 -u https://ny.nekocat.app"
