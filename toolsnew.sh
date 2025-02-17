@@ -57,7 +57,7 @@ net.ipv4.tcp_rmem=4096 131072 67108864
 net.ipv4.tcp_wmem=4096 65536 67108864
 net.ipv4.udp_rmem_min=8192
 net.ipv4.udp_wmem_min=8192
-net.core.default_qdisc=fq_codel
+net.core.default_qdisc=fq_pie
 net.ipv4.tcp_congestion_control=bbr
 EOF
 sysctl -p && sysctl --system
