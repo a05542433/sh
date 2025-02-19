@@ -98,8 +98,8 @@ block_ip() {
     local connections=$2
     if ! is_blocked "$ip" && ! is_whitelisted "$ip"; then
         log_debug "尝试封禁 IP: $ip (连接数: $connections)"
-        # 添加封禁规则
-        if iptables -A INPUT -s "$ip" -j DROP; then
+        # 在INPUT链的最前面添加封禁规则
+        if iptables -I INPUT 1 -s "$ip" -j DROP; then
             local log_message="$(date '+%Y-%m-%d %H:%M:%S') UTC - 已封禁 IP: $ip (连接数: $connections)"
             echo "$log_message" | tee -a "$BLACKLIST_LOG"
             log_debug "成功添加封禁规则: $ip"
