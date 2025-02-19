@@ -98,7 +98,7 @@ block_ip() {
     local connections=$2
     if ! is_blocked "$ip" && ! is_whitelisted "$ip"; then
         log_debug "尝试封禁 IP: $ip (连接数: $connections)"
-        # 使用 -A 在末尾添加规则
+        # 添加封禁规则
         if iptables -A INPUT -s "$ip" -j DROP; then
             local log_message="$(date '+%Y-%m-%d %H:%M:%S') UTC - 已封禁 IP: $ip (连接数: $connections)"
             echo "$log_message" | tee -a "$BLACKLIST_LOG"
@@ -135,7 +135,7 @@ get_connection_stats() {
     awk '{print $5}' | \
     awk -F: '{print $1}' | \
     sort | uniq -c | \
-    sort -rn    # 修改排序命令，按数字降序排列
+    sort -r +0n
 }
 
 # 处理单次检查
@@ -144,7 +144,8 @@ process_connections() {
     local tmp_file=$(mktemp)
     get_connection_stats > "$tmp_file"
     
-    while read count ip; do
+    # 从最后一行开始读取（连接数最多的IP）
+    tail -n 10 "$tmp_file" | while read count ip; do
         if [ ! -z "$ip" ] && [ "$count" -ge "$THRESHOLD" ]; then
             log_debug "发现高连接数IP: $ip (连接数: $count)"
             if ! is_whitelisted "$ip" && ! is_blocked "$ip"; then
@@ -152,7 +153,7 @@ process_connections() {
                 block_ip "$ip" "$count"
             fi
         fi
-    done < "$tmp_file"
+    done
     
     rm -f "$tmp_file"
     log_debug "完成连接检查"
@@ -172,7 +173,13 @@ show_status() {
     local tmp_file=$(mktemp)
     get_connection_stats > "$tmp_file"
     
-    while read count ip; do
+    # 获取总行数
+    local total_lines=$(wc -l < "$tmp_file")
+    # 计算开始行数（如果总行数小于10，则从第1行开始）
+    local start_line=$((total_lines > 10 ? total_lines - 10 : 1))
+    
+    # 使用tail获取最后10行（真正的top 10）
+    tail -n 10 "$tmp_file" | while read count ip; do
         if [ ! -z "$ip" ]; then
             status=""
             if is_blocked "$ip"; then
@@ -182,7 +189,7 @@ show_status() {
             fi
             echo "IP: $ip - 连接数: $count$status"
         fi
-    done < <(head -n 10 "$tmp_file")
+    done
     
     rm -f "$tmp_file"
     
