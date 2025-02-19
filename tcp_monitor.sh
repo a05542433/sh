@@ -134,6 +134,7 @@ get_connection_stats() {
     netstat -tpn | grep tcp | \
     awk '{print $5}' | \
     awk -F: '{print $1}' | \
+    grep -E '^([0-9]{1,3}\.){3}[0-9]{1,3}$' | \
     sort | uniq -c | \
     sort -r +0n
 }
