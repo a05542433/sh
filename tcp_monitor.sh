@@ -134,7 +134,8 @@ get_connection_stats() {
     netstat -tpn | grep tcp | \
     awk '{print $5}' | \
     awk -F: '{print $1}' | \
-    sort | uniq -c | sort -r +0n
+    sort | uniq -c | \
+    sort -rn    # 修改排序命令，按数字降序排列
 }
 
 # 处理单次检查
