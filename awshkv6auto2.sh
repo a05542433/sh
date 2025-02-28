@@ -11,6 +11,3 @@ S=nyk bash <(curl -fLSs https://dl.nyafw.com/download/nyanpass-install.sh) rel_n
 
 # 执行脚本4
 S=nyzu bash <(curl -fLSs https://dl.nyafw.com/download/nyanpass-install.sh) rel_nodeclient "-o -t 765b1aac-4391-4d30-9f98-d8a349a8eff5 -u https://zumo.moe"
-
-# 执行脚本5
-bash <(curl -sSL https://sgpz.oss-ap-southeast-1.aliyuncs.com/duckhkby2.sh)
